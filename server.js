@@ -1,40 +1,17 @@
 var express = require('express');
+var path = require("path");
+
+var routes = require("./routes");
+
 var app = express();
 
-// set the view engine to ejs
+app.set("port", process.env.PORT || 3000);
+
+app.set("views", path.join(__dirname, "views"));
 app.set('view engine', 'ejs');
 
-// use res.render to load up an ejs view file
+app.use(routes);
 
-// index page
-app.get('/', function(req, res) {
-  var mascots = [
-    { name: 'Sammy', organization: "DigitalOcean", birth_year: 2012},
-    { name: 'Tux', organization: "Linux", birth_year: 1996},
-    { name: 'Moby Dock', organization: "Docker", birth_year: 2013}
-  ];
-  var tagline = "No programming concept is complete without a cute animal mascot.";
-
-  res.render('pages/index', {
-    mascots: mascots,
-    tagline: tagline
-  });
-});
-
-// about page
-app.get('/about', function(req, res) {
-  res.render('pages/about');
-});
-
-// resume page
-app.get('/resume', function(req, res) {
-  res.render('pages/resume');
-});
-
-// contact page
-app.get('/contact', function(req, res) {
-  res.render('pages/contact');
-});
-
-app.listen(8080);
-console.log('Server is listening on port 8080');
+app.listen(app.get("port"), function(){
+  console.log("Server started on port " + app.get("port"));
+})
